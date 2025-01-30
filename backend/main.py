@@ -37,3 +37,12 @@ async def websocket_endpoint(websocket: WebSocket):
         )
         examiner_reply = response['choices'][0]['message']['content']
         await websocket.send_text(examiner_reply)
+
+@app.post("/transcribe/")
+async def transcribe_audio(file: UploadFile = File(...)):
+    model = whisper.load_model("base")
+    audio = await file.read()
+    with open("temp_audio.wav", "wb") as f:
+        f.write(audio)
+    result = model.transcribe("temp_audio.wav")
+    return {"transcript": result["text"]}
