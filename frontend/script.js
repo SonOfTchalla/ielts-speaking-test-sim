@@ -25,5 +25,11 @@ async function uploadAudio() {
     const data = await response.json();
     document.getElementById("transcription").innerText = "Transcription: " + data.transcript;
 
-    
+    const feedbackResponse = await fetch("http://localhost:8000/evaluate/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ transcript: data.transcript })
+    });
+    const feedbackData = await feedbackResponse.json();
+    document.getElementById("feedback").innerText = "Feedback: " + feedbackData.feedback;
 }
