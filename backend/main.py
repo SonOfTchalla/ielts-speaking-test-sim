@@ -46,3 +46,13 @@ async def transcribe_audio(file: UploadFile = File(...)):
         f.write(audio)
     result = model.transcribe("temp_audio.wav")
     return {"transcript": result["text"]}
+
+@app.post("/evaluate/")
+def evaluate_response(speech: SpeechInput):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "system", "content": "Evaluate this IELTS speaking response based on fluency, grammar, and pronunciation."},
+                  {"role": "user", "content": speech.transcript}]
+    )
+    feedback = response['choices'][0]['message']['content']
+    return {"feedback": feedback}
