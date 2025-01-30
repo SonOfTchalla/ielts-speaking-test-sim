@@ -20,3 +20,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 class SpeechInput(BaseModel):
     transcript: str
+
+@app.get("/")
+def read_root():
+    return {"message": "IELTS Speaking Test Simulator API"}
