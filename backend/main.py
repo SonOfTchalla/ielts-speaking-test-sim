@@ -24,3 +24,16 @@ class SpeechInput(BaseModel):
 @app.get("/")
 def read_root():
     return {"message": "IELTS Speaking Test Simulator API"}
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "system", "content": "You are an IELTS examiner."},
+                      {"role": "user", "content": data}]
+        )
+        examiner_reply = response['choices'][0]['message']['content']
+        await websocket.send_text(examiner_reply)
