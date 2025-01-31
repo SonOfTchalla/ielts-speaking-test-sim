@@ -2,17 +2,17 @@ from fastapi import FastAPI, WebSocket, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 import whisper
 from openai import OpenAI
-
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+import os
 import json
 from pydantic import BaseModel
-import os
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://127.0.0.1:5500"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
