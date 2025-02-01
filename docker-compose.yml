@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}  # Secure API key from .env file
+    volumes:
+      - whisper_cache:/root/.cache/whisper  # Persistent cache for Whisper models
+
+  frontend:
+    image: nginx:latest
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+
+volumes:
+  whisper_cache:
