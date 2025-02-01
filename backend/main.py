@@ -19,3 +19,11 @@ class SpeechInput(BaseModel):
 @app.get("/")
 def read_root():
     return {"message": "IELTS Speaking Test Simulator API"}
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        response = f"Received: {data}"  # Replace this with AI response logic
+        await websocket.send_text(response)
