@@ -1,17 +1,16 @@
-from vosk import Model, KaldiRecognizer
+from fastapi import UploadFile, File
+import vosk
 import wave
+import json
 
-model = Model("vosk-model-small-en-us-0.15")  # Download from Vosk website
-
-def transcribe_audio(file_path):
-    wf = wave.open(file_path, "rb")
-    rec = KaldiRecognizer(model, wf.getframerate())
-
+def transcribe_audio(file: UploadFile):
+    model = vosk.Model("model_path")
+    wf = wave.open(file.file, "rb")
+    rec = vosk.KaldiRecognizer(model, wf.getframerate())
     while True:
         data = wf.readframes(4000)
-        if not data:
+        if len(data) == 0:
             break
         rec.AcceptWaveform(data)
-
-    result = rec.Result()
-    return result
+    result = json.loads(rec.Result())
+    return {"transcript": result["text"]}
