@@ -23,7 +23,11 @@ def read_root():
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    while True:
-        data = await websocket.receive_text()
-        response = f"Received: {data}"  # Replace this with AI response logic
-        await websocket.send_text(response)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            print(f"Received from client: {data}")  # Debugging log
+            response = f"Server received: {data}"
+            await websocket.send_text(response)
+    except WebSocketDisconnect:
+        print("Client disconnected")
