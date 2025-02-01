@@ -57,8 +57,6 @@ async def transcribe_audio(file: UploadFile = File(...)):
 
 @app.post("/evaluate/")
 def evaluate_response(speech: SpeechInput):
-    response = client.chat.completions.create(model="gpt-3.5-turbo",
-    messages=[{"role": "system", "content": "Evaluate this IELTS speaking response based on fluency, grammar, and pronunciation."},
-              {"role": "user", "content": speech.transcript}])
-    feedback = response.choices[0].message.content
+    response = requests.post(HF_API_URL, headers=HF_HEADERS, json={"inputs": f"Evaluate this IELTS speaking response: {speech.transcript}"})
+    feedback = response.json().get("generated_text", "Feedback not available.")
     return {"feedback": feedback}
