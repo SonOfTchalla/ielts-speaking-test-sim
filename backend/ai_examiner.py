@@ -1,7 +1,8 @@
+from fastapi import WebSocket
 from transformers import pipeline
 
-qa_pipeline = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct")
+examiner_pipeline = pipeline("text-generation", model="HuggingFaceModel")
 
-def get_ai_response(user_input):
-    response = qa_pipeline(user_input, max_length=200)[0]["generated_text"]
-    return response
+def generate_examiner_response(user_input: str):
+    response = examiner_pipeline(user_input, max_length=150)
+    return response[0]["generated_text"]
