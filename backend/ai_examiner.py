@@ -1,4 +1,3 @@
-from fastapi import WebSocket
 from transformers import pipeline
 
 examiner_pipeline = pipeline("text-generation", model="HuggingFaceModel")
