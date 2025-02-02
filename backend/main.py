@@ -35,3 +35,11 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_text(response)
     except WebSocketDisconnect:
         print("Client disconnected")
+
+@app.post("/transcribe/")
+async def transcribe_audio_endpoint(file: UploadFile = File(...)):
+    return transcribe_audio(file)
+
+@app.post("/evaluate/")
+def evaluate_response_endpoint(input: SpeechInput):
+    return evaluate_response(input.transcript)
