@@ -3,4 +3,3 @@ uvicorn
 transformers
 vosk
 fpdf
-torch
