@@ -1,6 +1,6 @@
 from transformers import pipeline
 
-examiner_pipeline = pipeline("text-generation", model="google/flan-t5-small")
+examiner_pipeline = pipeline("text-generation", model="google/flan-t5-small", device_map="cpu")
 
 
 def generate_examiner_response(user_input: str):
